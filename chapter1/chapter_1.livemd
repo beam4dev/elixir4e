@@ -1,0 +1,566 @@
+<!-- livebook:{"file_entries":[{"name":"arch.svg","type":"attachment"},{"name":"arch2.svg","type":"attachment"},{"name":"pda.svg","type":"attachment"},{"name":"pda2.svg","type":"attachment"}]} -->
+
+# Chapter 1: Introduction
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.12.0"}
+])
+
+import IEx.Helpers
+```
+
+## Why should you learn to write programs?
+
+![](files/pda.svg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+Writing programs (or programming) is a very creative and rewarding activity. You can write programs for many reasons, ranging from making your living to solving a difficult data analysis problem to having fun to helping someone else solve a problem. This book assumes that everyone needs to know how to program, and that once you know how to program you will figure out what you want to do with your newfound skills.
+
+We are surrounded in our daily lives with computers ranging from laptops to cell phones. We can think of these computers as our “personal assistants” who can take care of many things on our behalf. The hardware in our current-day computers is essentially built to continuously ask us the question, “What would you like me to do next?”
+
+<!-- livebook:{"break_markdown":true} -->
+
+##### Personal Digital Assistant
+
+Programmers add an operating system and a set of applications to the hardware and we end up with a `Personal Digital Assistant` that is quite helpful and capable of helping us do many different things.
+
+Our computers are fast and have vast amounts of memory and could be very helpful to us if we only knew the language to speak to explain to the computer what we would like it to “do next”. If we knew this language, we could tell the computer to do tasks on our behalf that were repetitive. Interestingly, the kinds of things computers can do best are often the kinds of things that we humans find boring and mind-numbing.
+
+For example, look at the first three paragraphs of this chapter and tell me the most commonly used word and how many times the word is used. While you were able to read and understand the words in a few seconds, counting them is almost painful because it is not the kind of problem that human minds are designed to solve. For a computer, the opposite is true, reading and understanding text from a piece of paper is hard for a computer to do but counting the words and telling you how many times the most used word was used is very easy for the computer:
+
+## Code example
+
+```elixir
+file = Kino.Input.file("Upload your file")
+```
+
+```elixir
+value = Kino.Input.read(file)
+```
+
+```elixir
+path = Kino.Input.file_path(value.file_ref)
+```
+
+```elixir
+# Read the file name from the user
+
+{word, count} =
+  File.stream!(path)
+  |> Stream.map(&String.split(&1, ~r{\s+}, trim: true))
+  |> Stream.filter(&(Enum.empty?(&1) == false))
+  |> Enum.to_list()
+  |> List.flatten()
+  |> Enum.frequencies()
+  |> Enum.max_by(fn {_, value} -> value end)
+
+IO.puts("The most used word is `#{word}` with #{count} appearances")
+```
+
+Our “personal information analysis assistant” quickly told us that the word “to” was used sixteen times in the first three paragraphs of this chapter.
+
+This very fact that computers are good at things that humans are not is why you need to become skilled at talking “computer language”. Once you learn this new language, you can delegate mundane tasks to your partner (the computer), leaving more time for you to do the things that you are uniquely suited for. You bring creativity, intuition, and inventiveness to this partnership.
+
+## Creativity and motivation
+
+While this book is not intended for professional programmers, professional programming can be a very rewarding job both financially and personally. Building useful, elegant, and clever programs for others to use is a very creative activity. Your computer or Personal Digital Assistant (PDA) usually contains many different programs from many different groups of programmers, each competing for your attention and interest. They try their best to meet your needs and give you a great user experience in the process. In some situations, when you choose a piece of software, the programmers are directly compensated because of your choice.
+
+If we think of programs as the creative output of groups of programmers, perhaps the following figure is a more sensible version of our PDA:
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/pda2.svg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+Programmers Talking to You
+
+For now, our primary motivation is not to make money or please end users, but instead for us to be more productive in handling the data and information that we will encounter in our lives. When you first start, you will be both the programmer and the end user of your programs. As you gain skill as a programmer and programming feels more creative to you, your thoughts may turn toward developing programs for others.
+
+## Computer hardware architecture
+
+Before we start learning the language we speak to give instructions to computers to develop software, we need to learn a small amount about how computers are built. If you were to take apart your computer or cell phone and look deep inside, you would find the following parts:
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/arch.svg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+Hardware Architecture
+
+The high-level definitions of these parts are as follows:
+
+* The Central Processing Unit (or CPU) is the part of the computer that is built to be obsessed with “what is next?” If your computer is rated at 3.0 Gigahertz, it means that the CPU will ask “What next?” three billion times per second. You are going to have to learn how to talk fast to keep up with the CPU.
+
+* The Main Memory is used to store information that the CPU needs in a hurry. The main memory is nearly as fast as the CPU. But the information stored in the main memory vanishes when the computer is turned off.
+
+* The Secondary Memory is also used to store information, but it is much slower than the main memory. The advantage of the secondary memory is that it can store information even when there is no power to the computer. Examples of secondary memory are disk drives or flash memory (typically found in USB sticks and portable music players).
+
+* The Input and Output Devices are simply our screen, keyboard, mouse, microphone, speaker, touchpad, etc. They are all of the ways we interact with the computer.
+
+* These days, most computers also have a Network Connection to retrieve information over a network. We can think of the network as a very slow place to store and retrieve data that might not always be “up”. So in a sense, the network is a slower and at times unreliable form of Secondary Memory.
+
+While most of the detail of how these components work is best left to computer builders, it helps to have some terminology so we can talk about these different parts as we write our programs.
+
+As a programmer, your job is to use and orchestrate each of these resources to solve the problem that you need to solve and analyze the data you get from the solution. As a programmer you will mostly be “talking” to the CPU and telling it what to do next. Sometimes you will tell the CPU to use the main memory, secondary memory, network, or the input/output devices.
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/arch2.svg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+Where Are You?
+
+You need to be the person who answers the CPU’s “What next?” question. But it would be very uncomfortable to shrink you down to 5mm tall and insert you into the computer just so you could issue a command three billion times per second. So instead, you must write down your instructions in advance. We call these stored instructions a program and the act of writing these instructions down and getting the instructions to be correct programming.
+
+## Understanding programming
+
+In the rest of this book, we will try to turn you into a person who is skilled in the art of programming. In the end you will be a programmer - perhaps not a professional programmer, but at least you will have the skills to look at a data/information analysis problem and develop a program to solve the problem.
+
+In a sense, you need two skills to be a programmer:
+
+* First, you need to know the programming language (Elixir) - you need to know the vocabulary and the grammar. You need to be able to spell the words in this new language properly and know how to construct well-formed “sentences” in this new language.
+
+* Second, you need to “tell a story”. In writing a story, you combine words and sentences to convey an idea to the reader. There is a skill and art in constructing the story, and skill in story writing is improved by doing some writing and getting some feedback. In programming, our program is the “story” and the problem you are trying to solve is the “idea”.
+
+Once you learn one programming language such as Elixir, you will find it much easier to learn a second programming language such as Gleam or Python. The new programming language has very different vocabulary and grammar but the problem-solving skills will be the same across all programming languages.
+
+You will learn the “vocabulary” and “sentences” of Elixir pretty quickly. It will take longer for you to be able to write a coherent program to solve a brand-new problem. We teach programming much like we teach writing. We start reading and explaining programs, then we write simple programs, and then we write increasingly complex programs over time. At some point you “get your muse” and see the patterns on your own and can see more naturally how to take a problem and write a program that solves that problem. And once you get to that point, programming becomes a very pleasant and creative process.
+
+We start with the vocabulary and structure of Elixir programs. Be patient as the simple examples remind you of when you started reading for the first time.
+
+## Words and sentences
+
+Elixir’s vocabulary, is minimal, it has a very few reserve works.  Elixir also has macros such as `def` and `defmodule` which serve a special purpose. We will treat these macros as keywords in other languages because they have a specific meaning in Elixir programs. When writing Elixir programs, you’ll define your own names for variables and functions, but you must avoid using these special macros as names.
+
+Training a Pet Analogy
+
+Just as we use commands like “sit” or “fetch” to communicate with a dog, we use Elixir’s macros to instruct the Elixir compiler. If we were to anthropomorphize Elixir, we might imagine it patiently waiting for us to use these macros correctly to perform actions.
+
+<!-- livebook:{"break_markdown":true} -->
+
+These are the reserved words in the Elixir language.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+true, false, nil - used as atoms
+when, and, or, not, in - used as operators
+fn - used for anonymous function definitions
+do, end, catch, rescue, after, else - used in do-end blocks
+```
+
+For a complete and official reference, you can check the Elixir syntax documentation https://hexdocs.pm/elixir/1.7.1/syntax-reference.html.
+
+Elixir heavily relies on macros for various functionalities. Here are some of the most common macros you'll encounter in Elixir programs:
+
+### Module and Function Definition Macros:
+
+* defmodule: This macro defines a new module in your code.
+* def: This macro defines a function within a module.
+
+### Control Flow Macros:
+
+* if: This macro provides conditional branching based on expressions.
+* case: This macro performs pattern matching for complex decision making.
+* cond: This macro provides a more concise way to express chained conditional expressions. It evaluates each condition in a series of clauses and executes the associated code block if the condition is true.
+* with: Introduced in Elixir 1.2, this macro helps with chaining multiple expressions and handling their results in a more readable way. It allows you to bind the result of one expression to a variable and use it in subsequent expressions within the same block.
+* unless: This macro acts as the opposite of if. It executes the code block only if the given condition evaluates to false or nil.
+
+### Quoting and Unquoting:
+
+* quote: This macro allows you to embed Elixir code within an expression for manipulation at compile time.
+* unquote: This macro injects the result of an expression back into the quoted code during compilation.
+
+### Other Common Macros:
+
+* defp: Similar to def but defines a private function within a module.
+* defmacro: This macro allows you to define your own custom macros for code generation.
+* use: This macro imports functionalities (behaviors, modules) into your current module.
+
+That is it, and unlike a dog, Elixir is already completely trained. When you say "defmodule", Elixir will try every time you say it without fail.
+
+We will learn these reserved words, macros and how they are used in good time, but for now we will focus on the Elixir equivalent of “speak” (in human-to-dog language). The nice thing about telling Elixir to speak is that we can even tell it what to say by giving it a message in quotes:
+
+```elixir
+IO.puts("Hello World!")
+```
+
+And we have even written our first syntactically correct Elixir sentence. Our sentence starts with the function print followed by a string of text of our choosing enclosed in single quotes. The strings in the print statements are enclosed in quotes. Single quotes and double quotes do the same thing; most people use single quotes except in cases like this where a single quote (which is also an apostrophe) appears in the string.
+
+## Conversing with Elixir
+
+Now that we have a word and a simple sentence that we know in Elixir, we need to know how to start a conversation with Elixir to test our new language skills.
+
+Before you can converse with Elixir, you must first install the Elixir software on your computer and learn how to start Elixir on your computer. That is too much detail for this chapter so I suggest that you consult https://elixir-lang.org/install.html where they have detailed instructions of setting up and starting Elixir on Macintosh and Windows systems. At some point, you will be in a terminal or command window and you will type `iex` and the Elixir REPL interpreter will start executing in interactive mode and appear somewhat as follows:
+
+<!-- livebook:{"break_markdown":true} -->
+
+```dos
+>iex
+Erlang/OTP 26 [erts-14.2.5] [source] [64-bit] [smp:20:20] [ds:20:20:10] [async-threads:1] [jit:ns]
+
+Interactive Elixir (1.16.2) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)>
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+The iex(1)> prompt is the Elixir interpreter’s way of asking you, “What do you want me to do next?” Elixir is ready to have a conversation with you. All you have to know is how to speak the Elixir language.
+
+Let’s say for example that you did not know even the simplest Elixir language words or sentences. You might want to use the standard line that astronauts use when they land on a faraway planet and try to speak with the inhabitants of the planet
+
+```dos
+iex(1)> I come in peace, please take me to your leader
+** (SyntaxError) invalid syntax found on iex:1:3:
+    error: syntax error before: come
+    │
+  1 │ I come in peace, please take me to your leader
+    │   ^
+    │
+    └─ iex:1:3
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+iex(1)>
+```
+
+This is not going so well. Unless you think of something quickly, the inhabitants of the planet are likely to stab you with their spears, put you on a spit, roast you over a fire, and eat you for dinner.
+
+Luckily you brought a copy of this book on your travels, and you thumb to this very page and try again:
+
+```dos
+iex(1)> IO.puts("Hello World")
+Hello World
+:ok
+```
+
+This is looking much better, so you try to communicate some more:
+
+```dos
+iex(1)>  TO be added
+```
+
+The conversation was going so well for a while and then you made the tiniest mistake using the Elixir language and Elixir brought the spears back out.
+
+At this point, you should also realize that while Elixir is amazingly complex and powerful and very picky about the syntax you use to communicate with it, Elixir is not intelligent. You are really just having a conversation with yourself, but using proper syntax.
+
+In a sense, when you use a program written by someone else the conversation is between you and those other programmers with Elixir acting as an intermediary. Elixir is a way for the creators of programs to express how the conversation is supposed to proceed. And in just a few more chapters, you will be one of those programmers using Elixir to talk to the users of your program.
+
+Before we leave our first conversation with the Elixir interpreter, you should probably know the proper way to say “good-bye” when interacting with the inhabitants of Planet Elixir:
+
+```dos
+iex(6)>System.halt()
+```
+
+Click Ctrl + C twice
+
+## Terminology: Interpreter and compiler
+
+Elixir is a high-level language designed to be easily readable and writable by humans,
+ and efficiently executable by computers. It is built on top of the Erlang virtual machine,
+ known for running low-latency, distributed, and fault-tolerant systems.
+ Other high-level languages include Java, C++, PHP, Ruby, Basic, Perl, JavaScript, and more.
+ The CPU's actual hardware does not directly understand these high-level languages;
+ instead, they are translated into machine code that the CPU can execute.
+
+The CPU understands a language we call machine language. Machine language is very simple and frankly very tiresome to write because it is represented all in zeros and ones:
+
+```code
+001010001110100100101010000001111
+11100110000011101010010101101101
+...
+```
+
+Machine language seems quite simple on the surface, given that there are only zeros and ones, but its syntax is even more complex and far more intricate than Elixir. So very few programmers ever write machine language. Instead we build various translators to allow programmers to write in high-level languages like Elixir or Gleam and these translators convert the programs to machine language for actual execution by the CPU.
+
+Since machine language is tied to the computer hardware, machine language is not portable across different types of hardware. Programs written in high-level languages can be moved between different computers by using a different interpreter on the new machine or recompiling the code to create a machine language version of the program for the new machine.
+
+These programming language translators fall into two general categories: (1) interpreters and (2) compilers.
+
+An interpreter, such as IEx in Elixir, reads the source code written by the programmer, parses it, and executes the instructions immediately. IEx is an interactive shell that allows you to type Elixir expressions and get the results instantly. This interactive mode is particularly useful for experimenting with code and testing functions on the fly.
+
+In Elixir, when you want the interpreter to remember a value for later use, you bind it to a variable. Variables in Elixir are labels that you can use to refer to stored data. For example, you can bind a value to a variable and then retrieve or re-bind that value later in your code.
+
+```elixir
+x = 6
+IO.puts(x)
+```
+
+```elixir
+y = x * 7
+IO.puts(y)
+```
+
+In this example, we instruct Elixir to bind the value six to the variable x. We then output the value of x using IO.puts. Next, we bind the result of multiplying x by seven to the variable y, and output the value of y using IO.puts again.
+
+We entered the commands one by one, Elixir processes them as a sequence of statements, where later statements can access data defined in earlier ones. This sequence forms our first simple Elixir program, composed logically and meaningfully.
+
+The nature of an interpreter like Elixir’s IEx is to facilitate an interactive dialogue, as demonstrated. A compiler, on the other hand, requires the entire program in a file, which it then translates into machine language. The compiled machine code is stored in a file for execution.
+
+On a Windows system, executable files typically have a “.exe” or “.dll” extension, denoting “executable” and “dynamic link library,” respectively. Linux and Macintosh systems do not use a specific suffix to indicate executability.
+
+Attempting to view an executable file with a text editor would result in a jumble of characters, as the file contains machine language, not human-readable text.
+
+```code
+^?ELF^A^A^A^@^@^@^@^@^@^@^@^@^B^@^C^@^A^@^@^@\xa0\x82
+^D^H4^@^@^@\x90^]^@^@^@^@^@^@4^@ ^@^G^@(^@$^@!^@^F^@
+^@^@4^@^@^@4\x80^D^H4\x80^D^H\xe0^@^@^@\xe0^@^@^@^E
+^@^@^@^D^@^@^@^C^@^@^@^T^A^@^@^T\x81^D^H^T\x81^D^H^S
+^@^@^@^S^@^@^@^D^@^@^@^A^@^@^@^A\^D^HQVhT\x83^D^H\xe8
+....
+```
+
+Thankfully, we have the Elixir virtual machine (BEAM) that acts as an interpreter, allowing us to write code in a more readable language.
+
+By now, you might be curious: what language is the Elixir VM itself written in?  Is it compiled or interpreted? What happens when we run iex (the Elixir interactive shell)?
+
+The BEAM virtual machine is written in a compiled language called Erlang. You can find the Erlang source code by visiting the official Erlang website and navigating to their source downloads. So, the BEAM VM itself is a program written in Erlang, compiled into machine code. When you install Elixir, you essentially copy a machine code version of the BEAM VM onto your system.
+
+## Writing a Program
+
+While playing around in iex (Elixir's interactive shell) is a fantastic way to explore Elixir's functionalities, it's not ideal for tackling complex problems.
+
+When you want to create a simple program in Elixir, you’ll use a text editor to write Elixir instructions into a file script. By convention, Elixir scripts typically have names that end with .exs (for Elixir Script).
+
+To execute an Elixir script, you need to inform the Elixir interpreter (IEx) about the script’s filename. In your command window, you would type:
+
+```cmd
+elixir hello.exs
+```
+
+To write a more substantial program, we organize code in a files called a modules. Elixir modules typically have names ending with .ex.
+
+To run the module, we use the elixir command followed by the module name. For instance, to execute a module named hello.ex, you would type the following command in your terminal:
+
+```cmd
+elixir hello.ex
+```
+
+[See the code here](#code-example)
+
+## What is a program?
+
+In Elixir, a program is a sequence of statements crafted to achieve specific goals. Even our simplest Elixir script,our hello.exs, qualifies as a program. Although concise, it serves a purpose—albeit not particularly useful in this case.
+
+#### Programs Solving Problems:
+
+Understanding programs often comes easier when we consider the problems they solve. Let's take a scenario relevant to Elixir: analyzing text data. Imagine you're researching the most frequent word in a collection of tweets. Manually sifting through the data would be time-consuming and error-prone. Instead, an Elixir program can analyze the text efficiently and accurately, freeing up your time for more engaging tasks.
+
+##### Example: Finding the Most Frequent Word:
+
+Consider the following text about a dog and its walk:
+
+```
+text = "The happy dog went for a long walk in the park with its owner. The dog chased a frisbee and had a great time!"
+```
+
+Imagine you're faced with the daunting task of analyzing millions of lines of text. Scanning each word manually would be incredibly time-consuming. In fact, it would likely be faster for you to learn Elixir and write a program to count the words automatically.
+
+We can write an Elixir program to find the most frequent word in this text. This will help us understand how to analyze textual data using Elixir.
+
+## The building blocks of programs
+
+In the following sections, we'll delve into the core concepts of Elixir programming. We'll explore functions, modules, pattern matching, and processes, the building blocks used to construct powerful Elixir applications. These concepts are fundamental to most programming languages, not just Elixir.
+
+##### Fundamental Patterns:
+
+While specific syntax might differ, core programming patterns exist across languages. Let's explore these patterns in the context of Elixir:
+
+* **Input**:
+  Retrieve data from external sources. This could involve reading information from a file, receiving data through network requests, or interacting with user input.
+* **Output**:
+  Present the program's results. This could involve displaying data on the console, writing it to a file, or sending it to external devices.
+* **Sequential Execution**:
+  Execute code statements one after another in the order they appear in the module file.
+* **Conditional Execution**:
+  Evaluate conditions and execute specific code blocks based on the outcome (true or false).
+* **Repeated Execution**:
+  Employ loops or recursion to perform a set of instructions repeatedly, often with variations in each iteration.
+* **Function Reuse**:
+  Define functions that encapsulate specific functionalities. These functions can be called and reused throughout your program for modularity and code organization.
+* **Pattern Matching**: Elixir is a functional language that heavily relies on pattern matching. This allows you to compare data structures and extract specific values based on their structure. It's a powerful tool for data manipulation and control flow.
+* **High-Order Functions**: Elixir functions can accept other functions as arguments and return functions as results. This enables powerful abstractions and allows you to write concise and reusable code.
+
+These foundational patterns form the cornerstone of Elixir programming. While seemingly simple, the true power lies in creatively combining these concepts to build robust and efficient applications.
+
+## What could possibly go wrong?
+
+In our initial interactions with Elixir, we discover that precision matters when writing Elixir code. Even the slightest deviation or mistake can lead Elixir to abandon your program.
+
+Novice programmers sometimes interpret Elixi's intolerance for errors as a personal vendetta. While Elixir appears friendly to everyone else, it seems to harbor a grudge against them. It's as if Elixir deliberately deems their meticulously crafted programs as `unfit`, just to play tricks on them.
+
+But fear not! Elixir's strictness serves a purpose—it encourages clarity and correctness. As you continue your journey, remember that Elixir's demands are not personal; they're simply part of the language's commitment to quality.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+# Attempting to use an undefined function 
+iex(1)> IO.print('Hello world!')
+** (UndefinedFunctionError) function IO.print/1 is undefined or private
+   (elixir 1.16.2) IO.print(42)
+    iex:3: (file)
+
+# Calling a defined function with incorrect arguments 
+iex(2)> IO.puts(42, "This won't work")
+** (FunctionClauseError) no function clause matching in IO.puts/2
+
+    The following arguments were given to IO.puts/2:
+
+        # 1
+        42
+
+        # 2
+        "This won't work"
+
+    Attempted function clauses (showing 1 out of 1):
+
+        def puts(device, item) when is_atom(device) or is_pid(device)
+
+    (elixir 1.16.2) lib/io.ex:295: IO.puts/2
+    iex:3: (file)
+
+```
+
+## Debugging
+
+When your Elixir code throws an error or produces unexpected results, it's time to enter debug mode. Debugging is the process of identifying and resolving the root cause of the issue. Here are four key strategies to tackle those pesky bugs:
+
+* **Scrutinize Your Code**: Take a deep dive into your code. Read it line by line, ensuring it aligns with your intended functionality. Look for typos, syntax errors, or logical inconsistencies.
+
+* **Experiment with Modifications**: Make incremental changes and test them. Often, strategically placed `IO.inspect` statements can reveal the problem. In complex scenarios, you might need to build temporary helper functions to isolate the issue.
+
+* **Contemplate and Analyze**:  Dedicate time to think. What kind of error are you facing? Is it a syntax error, a runtime error, or a semantic issue? Analyze error messages and program output for clues. Consider what errors could lead to the observed behavior. Remember recent changes that might have introduced the bug.
+
+* **Strategic Retreat**: Sometimes, the best approach is to step back. Revert recent changes until you reach a working and well-understood state. Then, you can rebuild incrementally, ensuring each step functions correctly.
+
+##### Avoiding Debugging Pitfalls:
+
+* **Focusing on One Strategy**: Beginner programmers often get fixated on a single approach, neglecting the others. Effective debugging utilizes all four techniques: reading, running, thinking, and sometimes retreating.
+
+* **Reading Limitations**: Rereading code helps with typos, but not with conceptual errors. If the logic itself is flawed, you can reread endlessly.
+
+* **Random Walk Programming**: Running experiments without a plan leads to "random walk programming" - making random changes hoping for a fix. This is a time-consuming and inefficient approach.
+
+* **Importance of Thinking**: Debugging is similar to scientific exploration. Form a hypothesis about the cause of the error. If multiple possibilities exist, design tests to eliminate one at a time.
+
+* **The Power of Breaks and Discussion**: Taking a break or explaining the problem to someone (even yourself) can spark insights. Often, the act of explaining clarifies the issue.
+
+##### Knowing When to Retreat:
+
+Advanced debugging techniques become ineffective with excessive errors or overly complex code. Sometimes, simplification is key. Retreat by systematically removing code until you reach a functional and understandable state. Rebuild upon this solid foundation.
+
+###### Beginner's Reluctance to Retreat:
+
+New programmers often resist retreating, hesitant to delete code (even if incorrect). To ease the process, consider copying your code into a separate file before simplification. This allows you to paste sections back incrementally as you debug.
+
+By mastering these debugging strategies, you'll be well-equipped to tackle errors effectively and become a confident Elixir developer.
+
+## The learning journey
+
+Don't be discouraged if Elixir concepts seem disjointed at first.  Learning a new language, even a programming one, takes time.  Imagine a child babbling before forming sentences, then paragraphs, and finally, crafting stories. We aim to accelerate your Elixir journey, but similar to language acquisition, true understanding takes time.
+
+This book introduces Elixir concepts progressively, but feel free to explore non-linearly.  Peek ahead for context, and revisit earlier sections for deeper comprehension.  Skimming advanced topics can spark curiosity about the "why" behind programming.  Revising past material reinforces your learning, even if newer concepts seem challenging.
+
+In your Elixir learning journey, expect "Aha!" moments. You'll step back from the code and see the beautiful structure emerging.  If something feels particularly difficult, take a break, refresh your mind, and come back with new perspective. Explaining your problem to someone (even a pet!) can often lead to breakthroughs.
+
+Trust the process. Once you grasp Elixir concepts, you'll realize it was all elegant and well-designed, just waiting for you to absorb it.
+
+## Glossary
+
+* **Bug**: An error in an Elixir program that causes unexpected behavior or incorrect results. Debugging involves identifying and fixing these issues.
+* **Central Processing Unit (CPU)**: The core component of a computer responsible for executing instructions. It runs the software written by programmers.
+* **Compile**: The process of translating an Elixir program (written in a high-level language) into machine code (a low-level language) all at once. Compilation prepares the program for later execution.
+* **High-Level Language**: A programming language like Elixir that is designed to be easy for humans to read and write. It abstracts away low-level details and provides expressive syntax.
+* **Interactive Mode**: In Elixir, this refers to using the interactive shell (IEx) by typing commands and expressions directly at the prompt. It allows experimentation and quick feedback.
+* **Interpret**: To execute an Elixir program by translating it one line at a time. Elixir’s interpreter (IEx) processes code interactively.
+* **Low-Level Language**: Also known as machine code or assembly language, it is a programming language designed for efficient execution by the computer. It is not human-readable.
+* **Machine Code**: The lowest-level language for software, directly executed by the CPU. It consists of binary instructions.
+* **Main Memory**: Stores programs and data while the computer is running. Main memory loses its information when the power is turned off (volatile memory).
+* **Parse**: The process of examining an Elixir program and analyzing its syntactic structure. Parsing ensures that the code adheres to the language rules.
+* **Portability**: A property of an Elixir program that allows it to run on different kinds of computers without modification. Elixir’s portability is enhanced by its compatibility with the Erlang virtual machine (BEAM).
+* **Print Function**: An instruction in Elixir (using IO.puts or similar) that displays a value on the screen. It helps with debugging and output.
+* **Problem Solving**: The process of formulating a problem, finding a solution, and expressing that solution in code. Effective problem-solving is essential for writing good programs.
+* **Program**: A set of instructions written in Elixir (or any other language) that specifies a computation. Programs solve specific tasks or problems.
+* **Prompt**: When an Elixir program displays a message and waits for user input. The user can type responses or commands at the prompt.
+* **Secondary Memory**: Stores programs and data even when the power is turned off (non-volatile memory). Examples include disk drives and flash memory (e.g., USB sticks). It is generally slower than main memory.
+* **Semantics**: Refers to the meaning of an Elixir program—the behavior it exhibits when executed. Understanding semantics is crucial for writing correct programs.
+* **Semantic Error**: An error in an Elixir program that causes it to behave differently from the programmer’s intention. These errors are often subtle and require careful debugging.
+* **Source Code**: The human-readable representation of an Elixir program. It consists of Elixir code written in files with .ex or .exs extensions.
+
+## Exercises
+
+##### Exercise 1: What is the function of the secondary memory in a computer?
+
+* a) Execute all of the computation and logic of the program
+* b) Retrieve web pages over the Internet
+* c) Store information for the long term, even beyond a power cycle
+* d) Take input from the user
+
+##### Exercise 2: What is a program?
+
+##### Exercise 3: What is the difference between a compiler and an interpreter?
+
+##### Exercise 4: Which of the following contains “machine code”?
+
+* a) The IEx interpreter
+* b) The keyboard
+* c) Elixir source file
+* d) A word processing document
+
+##### Exercise 5: What is wrong with the following code:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> IO.put "Hello Elixir"
+** (UndefinedFunctionError) function IO.put/1 is undefined or private. Did you mean:
+
+      * puts/1
+      * puts/2
+
+    (elixir 1.16.2) IO.put("Hello Elixir")
+    iex:1: (file)
+```
+
+##### Exercise 6: Where in the computer is a variable such as “x” stored after the following Elixir line finishes?
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+x = 123
+```
+
+* a) Central processing unit
+* b) Main Memory
+* c) Secondary Memory
+* d) Input Devices
+* e) Output Devices
+
+##### Exercise 7: What will the following program print out:
+
+```Elixir
+x = 43
+x = x - 1
+IO.puts(x)
+```
+
+* a) 43
+* b) 42
+* c) x + 1
+* d) Error because x = x + 1 is not possible mathematically
+
+### Exercise 8: Explain each of the following using an example of a human capability:
+
+* (1) Central processing unit
+* (2) Main Memory
+* (3) Secondary Memory
+* (4) Input Device
+* (5) Output Device.
+
+For example, “What is the human equivalent to a Central Processing Unit”?
