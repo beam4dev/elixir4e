@@ -1,0 +1,252 @@
+# Chapter 2: Variables
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.12.0"}
+])
+
+import IEx.Helpers
+```
+
+## Values and types
+
+A value is one of the basic things a program works with, like a letter or a number. The values we have seen so far are 1, 2, and “Hello, World!”
+
+These values belong to different types: 2 is an integer, and “Hello, World!” is a string, so called because it contains a “string” of letters. You (and the interpreter) can identify strings because they are enclosed in quotation marks.
+
+```
+Note: While Elixir doesn't have a specific "string" type, binaries can efficiently store
+and manipulate text data. They offer additional functionalities compared to traditional
+strings in other languages.
+```
+
+##### Printing in Elixir
+
+If you want to play in your local box, use `iex` commnad to start the Elixir REPL
+
+```cmd
+$>iex
+Erlang/OTP 26 [erts-14.2.5] [source] [64-bit] [smp:20:20] [ds:20:20:10] [async-threads:1] [jit:ns]
+
+Interactive Elixir (1.16.2) - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)>
+```
+
+Unlike some languages, Elixir doesn't have a built-in print statement. However, you can achieve the same functionality using the IO (Input/Output) module.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> IO.puts(4)
+4
+:ok
+```
+
+You can try it here
+
+```elixir
+IO.puts(4)
+```
+
+If you are not sure what type a value has, you can use `i` helper in IEx
+
+* i/0            - prints information about the last value
+* i/1            - prints information about the given term
+
+i/n Indicates the arity, in this case we can call `i` so it will show the information of the last value or we can call `i term` so it will show the information about `term`.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(2)> a = 1
+1
+iex(3)> i
+Term
+  1
+Data type
+  Integer
+Reference modules
+  Integer
+Implemented protocols
+  IEx.Info, Inspect, List.Chars, String.Chars
+iex(4)> str = "Hello World"
+"Hello World"
+iex(5)> i
+Term
+  "Hello World"
+Data type
+  BitString
+Byte size
+  11
+Description
+  This is a string: a UTF-8 encoded binary. It's printed surrounded by
+  "double quotes" because all UTF-8 encoded code points in it are printable.
+Raw representation
+  <<72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100>>
+Reference modules
+  String, :binary
+Implemented protocols
+  Collectable, IEx.Info, Inspect, List.Chars, String.Chars  
+```
+
+You can try it here
+
+```elixir
+a = 1
+i(a)
+```
+
+```elixir
+str = "Hello World"
+i(str)
+```
+
+Strings belong to the type BitString and integers belong to the type Integer. Less obviously, numbers with a decimal point belong to a type called Float, because these numbers are represented in a format called floating point.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> i 3.2
+Term
+  3.2
+Data type
+  Float
+Reference modules
+  Float
+Implemented protocols
+  IEx.Info, Inspect, List.Chars, String.Chars
+```
+
+```elixir
+i(3.2)
+```
+
+What about values like “17” and “3.2”? They look like numbers, but they are in quotation marks like strings.
+
+```elixir
+i("17")
+i("3.2")
+```
+
+They’re strings. When you type a large integer, you might be tempted to use commas between groups of three digits, as in 1,000,000. This is not a legal integer in Elixir
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(8)> i = 1,000,000
+** (SyntaxError) invalid syntax found on iex:8:6:
+    error: syntax error before: ','
+    │
+  8 │ i = 1,000,000
+    │      ^
+    │
+    └─ iex:8:6
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+```
+
+But you can write
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ iex(8)> i = 1_000_000
+ 1000000
+```
+
+## Variables
+
+Elixir is a functional programming language that encourages immutability and pattern matching. In Elixir, the `=` symbol is not used for assignment. Instead, we use pattern matching to bind values to names (variables).
+
+Examples of Binding Values to Variables in Elixir:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ message = "And now for something completely different"
+ n = 17 
+ pi = 3.1415926535897931  # Note: This is an approximation of pi
+```
+
+This example creates three bindings.
+
+* The first binds a string to a new variable named `message`
+* The second binds the integer `17` to `n`
+* The third binds the (approximate) value of `π` to `pi`.
+
+To display the value of a variable, you can use a `IO.puts/1` function:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(6)> IO.puts n
+17
+:ok
+iex(7)> IO.puts message
+And now for something completely different
+:ok
+```
+
+#### Playtime
+
+```elixir
+# Bind a value to a variable
+# Display the value
+# Displat the info of the value 
+```
+
+## Variable names and keywords
+
+Programmers generally choose names for their variables that are meaningful and document what the variable is used for.
+
+Variable Names
+
+* Can start with lowercase letters or underscores(e.g., `user_name` `_ignored_value`).
+* Can start with an underscore character, but it's onlyused to indicate that the value of the variable should be ignored.
+* Can be arbitrarily long.
+* Can contain letters, numbers and underscores.
+* The underscore character `_` can appear in a name. It is often used in names with multiple words, such as `my_name` or `airspeed_of_unladen_swallow`.
+* Cannot start with a number or upper case.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ 76trombones = "big parade"
+** (SyntaxError) invalid syntax found on iex:7:1:
+    error: invalid character "t" after number 76. If you intended to write a number, make sure to separate the number from the character (using comma, space, etc). If you meant to write a function name or a variable, note that identifiers in Elixir cannot start with numbers. Unexpected token: t
+    │
+  7 │ 76trombones = "big parade"
+    │ ^
+    │
+    └─ iex:7:1
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+```
+
+## Statements
+
+## Operators and operands
+
+## Expressions
+
+## Order of operations
+
+## Modulus operator
+
+## String operations
+
+## Asking the user for input
+
+## Comments
+
+## Choosing mnemonic variable names
+
+## Debugging
+
+## Glossary
+
+## Exercises

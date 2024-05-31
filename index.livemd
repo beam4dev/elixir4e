@@ -1,0 +1,12 @@
+# Elixir for Everybody
+
+## About the book
+
+The goal of this book is to provide an Informatics-oriented introduction to programming. The primary difference between a computer science approach and the Informatics approach taken in this book is a greater focus on using Elixir to solve data analysis problems common in the world of Informatics.
+
+This book is based on [Python for Everybody](https://www.py4e.com/book) by Dr. Charles R. Severance
+
+### Contents
+
+* [Chapter 1: Introduction](chapters/chapter_1.livemd)
+* [Chapter 2: Variables](chapters/chapter_2.livemd)
