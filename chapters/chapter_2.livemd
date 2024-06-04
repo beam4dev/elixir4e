@@ -10,19 +10,19 @@ import IEx.Helpers
 
 ## Values and types
 
-A value is one of the basic things a program works with, like a letter or a number. The values we have seen so far are 1, 2, and “Hello, World!”
+A value is one of the basic things a program works with, like a letter or a number. The values we have seen so far are `1`, `2`, and `Hello, World!`
 
-These values belong to different types: 2 is an integer, and “Hello, World!” is a string, so called because it contains a “string” of letters. You (and the interpreter) can identify strings because they are enclosed in quotation marks.
+These values belong to different types: `2` is an `integer`, and `Hello, World!` is an `string`, so called because it contains a `string` of letters. You (and the interpreter/compiler) can identify strings because they are enclosed in quotation marks.
 
 ```
-Note: While Elixir doesn't have a specific "string" type, binaries can efficiently store
+Note: While Elixir doesn't have a specific `string` type, binaries can efficiently store
 and manipulate text data. They offer additional functionalities compared to traditional
 strings in other languages.
 ```
 
 ##### Printing in Elixir
 
-If you want to play in your local box, use `iex` commnad to start the Elixir REPL
+If you want to play in your local box, use `iex` command to start the Elixir REPL
 
 ```cmd
 $>iex
@@ -53,7 +53,7 @@ If you are not sure what type a value has, you can use `i` helper in IEx
 * i/0            - prints information about the last value
 * i/1            - prints information about the given term
 
-i/n Indicates the arity, in this case we can call `i` so it will show the information of the last value or we can call `i term` so it will show the information about `term`.
+`i/n` Indicates the arity, in this case we can call `i` so it will show the information of the last value or we can call `i term` so it will show the information about `term`.
 
 <!-- livebook:{"force_markdown":true} -->
 
@@ -101,7 +101,7 @@ str = "Hello World"
 i(str)
 ```
 
-Strings belong to the type BitString and integers belong to the type Integer. Less obviously, numbers with a decimal point belong to a type called Float, because these numbers are represented in a format called floating point.
+[Strings](https://hexdocs.pm/elixir/1.7.1/syntax-reference.html#strings) belong to the type `BitString` and integers belong to the type `Integer`. Less obviously, numbers with a decimal point belong to a type called `Float`, because these numbers are represented in a format called `floating point`.
 
 <!-- livebook:{"force_markdown":true} -->
 
@@ -121,7 +121,7 @@ Implemented protocols
 i(3.2)
 ```
 
-What about values like “17” and “3.2”? They look like numbers, but they are in quotation marks like strings.
+What about values like `"17"` and `"3.2"`? They look like numbers, but they are in quotation marks like strings.
 
 ```elixir
 i("17")
@@ -201,14 +201,17 @@ And now for something completely different
 
 Programmers generally choose names for their variables that are meaningful and document what the variable is used for.
 
-Variable Names
+[Variable Names](https://hexdocs.pm/elixir/naming-conventions.html)
 
 * Can start with lowercase letters or underscores(e.g., `user_name` `_ignored_value`).
-* Can start with an underscore character, but it's onlyused to indicate that the value of the variable should be ignored.
+* Can start with an underscore character, but it's only used to indicate that the value of the variable should be ignored.
 * Can be arbitrarily long.
 * Can contain letters, numbers and underscores.
 * The underscore character `_` can appear in a name. It is often used in names with multiple words, such as `my_name` or `airspeed_of_unladen_swallow`.
+* Can end with the question mark (?) or exclamation mark (!) characters
 * Cannot start with a number or upper case.
+
+###### Illegal names
 
 <!-- livebook:{"force_markdown":true} -->
 
@@ -227,26 +230,582 @@ Variable Names
     (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
 ```
 
-## Statements
+<!-- livebook:{"force_markdown":true} -->
 
-## Operators and operands
+```elixir
+iex(1)> more@ = 1000000
+** (SyntaxError) invalid syntax found on iex:1:1:
+    error: invalid character "@" (code point U+0040) in identifier: more@
+    │
+  1 │ more@ = 1000000
+    │ ^
+    │
+    └─ iex:1:1
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+```
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ iex(1)>in = "Hello Elixir"
+** (SyntaxError) invalid syntax found on iex:1:4:
+    error: syntax error before: '='
+    │
+  1 │ in = "Hello Elixir"
+    │    ^
+    │
+    └─ iex:1:4
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+```
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> NotValid = "Why is not valid?"
+** (MatchError) no match of right hand side value: "Why is not valid?"
+    (stdlib 5.2.3) erl_eval.erl:498: :erl_eval.expr/6
+    iex:1: (file)
+```
+
+`76trombones` is illegal because it begins with a number. `more@` is illegal because it contains an illegal character, `@`. But what's wrong with `in`?
+
+It turns out that `in` is one of Elixir's [reserverd keywords](https://hexdocs.pm/elixir/1.7.1/syntax-reference.html#reserved-words). The interpreter uses keywords to recognize the structure of the program, and they cannot be used as variable names.
+
+The last one `NotValid` is an invalid variable name because it's an `Atom` more on that later.
+When Atoms start with an upper case are called [`Alias`](https://hexdocs.pm/elixir/syntax-reference.html#aliases).
 
 ## Expressions
 
+In Elixir, everything is an expression that has a return value. So, there are no `statements` in the same sense as in Phython. Instead, we have expressions that are evaluated and return a value.
+
+When you type an expression in the Elixir interactive shell, the shell evaluates it and displays the result, if there is one.
+
+A script usually contains a sequence of expressions. If there is more than one expression, the results appear one at a time as the expressions are evaluated.
+
+For example, the script:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+IO.puts(1)
+x = 2
+IO.puts(x)
+```
+
+produces the output:
+
+```
+iex(1)> IO.puts(1)
+1
+:ok
+iex(2)> x = 2
+2
+iex(3)> IO.puts(x)
+2
+:ok
+```
+
+So, in Elixir, there are no statements in the same sense as in Python. Instead, we have expressions that are evaluated and return a value.
+
+## Operators and operands
+
+Operators are special symbols that represent computations like addition and multiplication. The values the operator is applied to are called operands.
+
+The operators `+`, `-`, `*`, `/`, and `**` perform addition, subtraction, multiplication, division, and exponentiation, as in the following examples:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+20+32
+hour-1
+hour*60+minute
+minute/60
+5**2
+(5+9)*(15-7)
+```
+
+In Elixir the result of the divsion is a floting point result
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(5)> 3 / 2
+1.5
+```
+
+To perform an integer division, use the auto-imported funcion `Kernel.div/2`
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+
+iex(6)> div(3,2)
+1
+
+
+##### Exercise 1: Type the following expressions in IEx or in the Next Cell to see what they do: 
+```
+
+```elixir
+# Exercise 1: Type the following expressions: Note # is a comment. 
+# x = 5
+# x + 1
+# IO.puts x ## Guess the value of x
+```
+
+#### Note:
+
+_In Elixir many operators are functions_. So the expression `a - b`, can be rewritten
+as `Kernel.-(a,b)`
+To learn more in the following cell or IEx type `h Kernel.-`
+
+```elixir
+# Learn about Operators, many of them are actually functions.
+# Uncomment the following line and Evaluate it. Spend time to learn more about it.
+# h Kernel.-  
+```
+
 ## Order of operations
+
+When more than one operator appears in an expression, the order of evaluation depends on the `rules of precedence`. Elixir follows mathematical convention for mathematical operators. The acronym `PEMDAS` is a useful way to remember the rules:
+
+* Parentheses have the highest precedence and can be used to force an expression to evaluate in the order you want. For example, `2 * (3-1) is 4`, and `(1+1)**(5-2) is 8`. Parentheses can also be used to make an expression easier to read, as in `(minute * 100) / 60`, even if it doesn't change the result.
+
+* Exponentiation has the next highest precedence, so `2**1+1 is 3`, not `4`, and `3*1**3 is 3`, not `27`.
+
+* Multiplication and Division have the same precedence, which is higher than Addition and Subtraction, which also have the same precedence. So `2*3-1 is 5`, not `4`, and `6+4/2` is `8.0`, not `5`.
+
+* Operators with the same precedence are evaluated from left to right. So the expression `5-3-1 is 1`, not `3`, because the `5-3` happens first and then `1` is subtracted from `2`.
+
+When in doubt, it's always a good idea to use parentheses in your expressions to make sure the computations are performed in the order you intend.
 
 ## Modulus operator
 
+The modulus operator works on integers and yields the remainder when the first operand is divided by the second.  In Elixir, the modulus operator is the `rem` function. The syntax is `rem(dividend, divisor)`.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> quotient = div(7, 3)
+2
+
+iex(2)> remainder = rem(7, 3)
+1
+```
+
+So 7 divided by 3 is 2 with 1 left over.
+
+The modulus operator turns out to be surprisingly useful. For example, you can check whether one number is divisible by another: if `rem(x, y)` is zero, then `x` is divisible by `y`.
+
+You can also extract the right-most digit or digits from a number. For example, `rem(x, 10)` yields the right-most digit of x (in base 10). Similarly, `rem(x, 100)` yields the last two digits.
+
+```elixir
+
+```
+
 ## String operations
+
+In Elixir, we work with strings as UTF-8 encoded binaries. Here are some key points about string operations:
+
+* **Concatenation**
+
+  * To concatenate two strings, we use the `<>` operator
+  * Example
+    ```elixir
+    iex(1)> first = "hello"
+    "hello"
+    iex(2)> second = "world"
+    "world"
+    iex(3)> result = first <> " " <> second
+    "hello world"
+    iex(4)> IO.puts(result)  # Output: "hello world"
+    hello world
+    :ok
+    ```
+
+* **Interpolation**
+
+  * Elixir strings support interpolation using the `#{}` syntax.
+  * You can place expressions inside a string using interpolation
+  * Example
+    ```elixir
+    iex(1)> name = "joe"
+    "joe"
+    iex(2)> greeting = "Hello #{name}"
+    "Hello joe"
+    iex(3)> result = "The value is #{10 * 5}"
+    "The value is 50"
+    ```
+
+  Remember that Elixir strings are UTF-8 encoded binaries, and we can perform various operations on them.
+
+  Additional helper functions for working with strings are available in the [String module](https://hexdocs.pm/elixir/String.html)
 
 ## Asking the user for input
 
+Sometimes we would like to take the value for a variable from the user via their keyboard. In Elixir we can use the function `IO.get/1`. When this function is called, the program stops and waits for the user to type something. When the user presses Return or Enter, the program resumes and input returns what the user typed as a string.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> inp = IO.gets("")
+Some silly stuff
+"Some silly stuff\n"
+iex(2)> IO.puts inp
+Some silly stuff
+
+:ok
+```
+
+Before getting input from the user, it is a good idea to print a prompt telling the user what to input. You can pass a string to input to be displayed to the user before pausing for input:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(38)> name = IO.gets("What is your name?\n")
+What is your name?
+Chuck
+"Chuck\n"
+iex(39)> IO.puts(name)
+Chuck
+
+:ok
+```
+
+The sequence `\n` at the end of the prompt represents a `newline`, which is a special character that causes a line break. That's why the user's input appears below the prompt.
+When we get the input from the user we have that sequence at the end. If we want to remove it we can use `String.trim_trailing/1, String.trim_trailing/2 or String.trim/1, String.trim_trim/2`
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(47)> String.trim_trailing("Hello\n")
+"Hello"
+iex(48)> String.trim_trailing("Hello\n", "\n")
+"Hello"
+iex(49)> String.trim("Hello\n")
+"Hello"
+iex(50)> String.trim("Hello\n", "\n")
+"Hello"
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Exercises: Explore the modules documentation using IEx
+
+```elixir
+# Uncomment the following lines and explore the documentation for the following functions.
+
+h(IO.gets())
+# h String.trim/1
+# h String.trim/2
+# h String.trim_trailing/1
+# h String.trim_trailing/2
+```
+
+If you expect the user to type an integer, you can try to convert the return value to integer, we can use the function `String.trim` to remove any leading and trailing whitespace from the string, including the newline character at the end of the user's input.
+Then we can call the function `String.to_integer` that convert the string into an integer.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> prompt = IO.gets("What...is the airspeed velocity of an unladen swallow?\n")
+What...is the airspeed velocity of an unladen swallow?
+17
+"17\n"
+iex(2)> speed_string = String.trim(prompt)
+"17"
+iex(3)> speed =  String.to_integer(speed_string)
+17
+```
+
+But if the user types something other than a string of digits, you get an error:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(4)> prompt = IO.gets("What...is the airspeed velocity of an unladen swallow?\n")
+What...is the airspeed velocity of an unladen swallow?
+17s
+"17s\n"
+iex(5)> speed_string = String.trim(prompt)
+"17s"
+iex(6)> speed =  String.to_integer(speed_string)
+** (ArgumentError) errors were found at the given arguments:
+
+  * 1st argument: not a textual representation of an integer
+
+    erlang.erl:4719: :erlang.binary_to_integer("17s")
+    iex:10: (file)
+```
+
+We will see how to handle this kind of error later.
+
+Before we continue let's rewrite this code in more idiomatic Elixir way.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ speed = IO.gets("What...is the airspeed velocity of an unladen swallow?\n") 
+         |> String.trim() 
+         |> String.to_integer()
+```
+
+In this solution we use the pipe operator `(|>)` to pass the result of one function into the next. This can make the code more readable and elegant.
+
 ## Comments
+
+As programs get bigger and more complicated, they get more difficult to read. Formal languages are dense, and it is often difficult to look at a piece of code and figure out what it is doing, or why.
+
+For this reason, it is a good idea to add notes to your programs to explain in natural language what the program is doing. These notes are called comments, and in Elixir they start with the `#` symbol and run to the end of the line.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+# compute the percentage of the hour that has elapsed
+percentage = (minute * 100) / 60
+```
+
+In this case, the comment appears on a line by itself. You can also put comments at the end of a line:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+percentage = (minute * 100) / 60     # percentage of an hour
+```
+
+Everything from the # to the end of the line is ignored; it has no effect on the program.
+
+Comments are most useful when they document non-obvious features of the code. It is reasonable to assume that the reader can figure out what the code does; it is much more useful to explain why.
+
+This comment is redundant with the code and useless
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+v = 5     # assign 5 to v
+```
+
+This comment contains useful information that is not in the code:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+v = 5     # velocity in meters/second.
+```
+
+Good variable names can reduce the need for comments, but long names can make complex expressions hard to read, so there is a trade-off.
 
 ## Choosing mnemonic variable names
 
+As long as you follow the simple rules of variable naming, and avoid reserved words, you have a lot of choice when you name your variables. In the beginning, this choice can be confusing both when you read a program and when you write your own programs. For example, the following three programs are identical in terms of what they accomplish, but very different when you read them and try to understand them.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ a = 35.0
+ b = 12.50
+ c = a * b
+ IO.puts c
+```
+
+---
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ hours = 35.0
+ rate = 12.50
+ pay = hours * rate
+ IO.puts pay
+```
+
+---
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+ x1q3z9ahd = 35.0
+ x1q3z9afd = 12.50
+ x1q3p9afd = x1q3z9ahd * x1q3z9afd
+ IO.puts x1q3p9afd
+```
+
+The Elixir compiler sees all three of these programs as exactly the same but humans see and understand these programs quite differently. Humans will most quickly understand the intent of the second program because the programmer has chosen variable names that reflect their intent regarding what data will be stored in each variable.
+
+We call these wisely chosen variable names `mnemonic variable names`. The word `mnemonic` means `memory aid`. We choose mnemonic variable names to help us remember why we created the variable in the first place.
+
+While this all sounds great, and it is a very good idea to use mnemonic variable names, mnemonic variable names can get in the way of a beginning programmer's ability to parse and understand code. This is because beginning programmers have not yet memorized the reserved words and sometimes variables with names that are too descriptive start to look like part of the language and not just well-chosen variable names.
+
+Take a quick look at the following Elixir sample code which loops through some data. We will cover loops soon, but for now try to just puzzle through what this means:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+  Enum.each(words, fn(word) -> IO.puts(word) end)
+```
+
+What is happening here? Which of the tokens (fn, word, end, etc.) are reserved words, macros, modules and which are just variable names? Does Elixir understand at a fundamental level the notion of words? Beginning programmers have trouble separating what parts of the code must be the same as this example and what parts of the code are simply choices made by the programmer.
+
+For beginners, it's essential to recognize which parts of the code are defined by the language and which are choices made by the programmer. As you become more familiar with Elixir's reserved words,macros and modules, you'll be able to read and write code more intuitively.
+
 ## Debugging
+
+At this point, the syntax error you are most likely to make is an illegal variable name, like using reserved keyword or macros like `in` and `end`, or `odd~job` and `US$`, which contain illegal characters.
+
+If you put a space in a variable name, Elixir thinks the first one is a function and it's undefined.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> bad name = 5
+error: undefined function bad/1 (there is no such import)
+└─ iex:19
+
+** (CompileError) cannot compile code (errors have been logged)
+```
+
+In Elixir the compiler does a great job describing the error message. For example in the following syntax error, the compiler is very informative
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> end = 2
+** (SyntaxError) invalid syntax found on iex:19:1:
+    error: unexpected reserved word: end
+    │
+ 19 │ end = 2
+    │ ^
+    │
+    └─ iex:19:1
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+```
+
+The runtime error you are most likely to make is a `use before def;` that is, trying to use a variable before you have assigned a value. This can happen if you spell a variable name wrong:
+
+<!-- livebook:{"force_markdown":true} -->
+
+`````elixir
+iex(1)> principal = 327.68
+327.68
+iex(2)> interest = principle * rate
+error: undefined variable "principle"
+└─ iex:2
+
+** (CompileError) cannot compile code (errors have been logged)
+
+````
+At this point, the most likely cause of a semantic error is the order of operations. For example, to evaluate `1/2π`, you might be tempted to write
+
+`````
+
+1.0 / 2.0 * :math.pi
+
+```
+ But the division happens first, so you would get `π/2`, which is not the same thing! There is no way for Elixir to know what you meant to write, so in this case you don't get an error message; you just get the wrong answer.
+```
 
 ## Glossary
 
+* **bind / re-bind**
+  A statement that binds a value to a variable.
+* **concatenate**
+  To join two operands end to end.
+* **comment**
+  Information in a program that is meant for other programmers (or anyone reading the source code) and has no effect on the execution of the program.
+* **evaluate**
+  To simplify an expression by performing the operations in order to yield a single value.
+* **expression**
+  A combination of variables, operators, and values that represents a single result value.
+* **floating point**
+  A type that represents numbers with fractional parts.
+* **integer**
+  A type that represents whole numbers.
+* **keyword**
+  A reserved word that is used by the compiler to parse a program; you cannot use keywords like in, end, as variable names.
+* **mnemonic**
+  A memory aid. We often give variables mnemonic names to help us remember what is stored in the variable.
+* **modulus operator**
+  An operator,`re`m, that works on integers and yields the remainder when one number is divided by another.
+* **operand**
+  One of the values on which an operator operates.
+* **operator**
+  A special symbol that represents a simple computation like addition, multiplication, or string concatenation.
+* **rules of precedence**
+  The set of rules governing the order in which expressions involving multiple operators and operands are evaluated.
+* **string**
+  A type that represents sequences of characters.
+* **type**
+  A category of values. The types we have seen so far are integers (type int), floating-point numbers (type Integers), and strings (type BitString).
+* **value**
+  One of the basic units of data, like a number or string, that a program manipulates.
+* **variable**
+  A name that refers to a value.
+
 ## Exercises
+
+##### Exercise 2:
+
+Write a program that uses `IO.gets` to prompt a user for their name and then
+welcomes them.
+
+```cmd
+Enter your name: Chuck
+Hello Chuck
+```
+
+##### Exercise 3:
+
+Write a program to prompt the user for hours and rate per hour to compute gross pay.
+
+`````cmd
+Enter Hours: 35
+Enter Rate: 2.75
+Pay: 96.25
+````
+
+We won't worry about making sure our pay has exactly two digits after the decimal place for now. If you want, you can play with the `Float.round/2` function to round a floating-point number to a specified number of decimal places.
+
+#### Exercise 4
+Assume that we execute the following binding expressions:
+
+`````
+
+width = 17
+height = 12.0
+
+```
+For each of the following expressions, write the value of the expression and the type (of the value of the expression).
+
+```
+
+div(width, 2) === ?
+
+width / 2.0   === ?
+
+height / 3    === ?
+
+1 + 2 * 5     === ?
+
+```
+Check your answer in IEx or create an Elixir cell. Copy the expressions and replace the ? with the answer.
+
+
+#### Exercise 5: 
+
+Write a program which prompts the user for a Celsius temperature, convert the temperature to Fahrenheit, and print out the converted temperature.
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### References
+
+[1] [Syntax Reference](https://hexdocs.pm/elixir/syntax-reference.html#aliases)
