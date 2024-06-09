@@ -1,0 +1,149 @@
+# Conditional execution
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.12.0"}
+])
+
+import IEx.Helpers
+```
+
+## Note
+
+In Elixir, while the language is inherently functional, we also have control flow constructs like `if`, `cond`, and `case` that allow us to solve problems in a more imperative manner when needed.
+
+But remember Elixir code tried to be declarative, no imperative.
+
+## Boolean Expressions
+
+A boolean expression is an expression that is either `true` or `false`. Elixir supports true and false as booleans. The following examples use the operator `==`, which compares two operands and produces `true` if they are equal and `false` otherwise:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> 5 == 5
+true
+iex(2)> 5 == 6
+false
+```
+
+The `true` and `false` values are aliases for atoms of the same name,
+so `true` is the same as the atom `:true` and `false` as the atom `:false`
+
+These values can be combined with the strict boolean operators (`and/2`, `or/2`, `not/1`),
+they require their first argument to be a boolean.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(3)> true and (5 == 5)
+true
+iex(4)> 6 and true
+** (BadBooleanError) expected a boolean on left-side of "and", got: 6
+    iex:4: (file)
+```
+
+Learn more about [Booleans](https://hexdocs.pm/elixir/basic-types.html#booleans-and-nil)
+
+The `==` operator is one of the comparison operators; the others are:
+
+```
+x === y              # x is strict equal to y    (value and type equality)  
+X !== y              # x is strict inequal to y  (value and type equality)  
+x != y               # x is not equal to y (value equality)
+x == y               # x is equal to y     (value equality)
+x > y                # x is greater than y 
+x < y                # x is less than y
+x >= y               # x is greater than or equal to y
+x <= y               # x is less than or equal to y
+```
+
+---
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(6)> 5 === 5.0
+false
+iex(7)> 5 !== 5.0
+true
+```
+
+Although these operations are probably familiar to you, the Elixir symbols are different from the mathematical symbols for the same operations. A common error is to use a single equal sign `(=)` instead of a double equal sign `(==)`. Remember that `=` is the binding operator and `==` is a comparison operator. There is no such thing as `=<` or `=>`.
+
+To learn more about [comparison operators](https://hexdocs.pm/elixir/operators.html#comparison-operators)
+
+## Logical Operators
+
+There are three logical operators: `and`, `or`, and `not`. The semantics (meaning) of these operators is similar to their meaning in English. For example,
+
+`x > 0 and x < 10`
+
+is true only if `x` is greater than `0` and less than `10`.
+
+`rem(n, 2) == 0 or rem(n, 3) == 0` is `true` if either of the conditions is `true`, that is, if the number is divisible by 2 or 3.
+
+Finally, the not operator negates a boolean expression, so `not (x > y)` is true if `x > y` is false.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> x = 1
+1
+iex(2)> y = 2
+2
+iex(3)> x > y
+false
+iex(4)> not (x > y)
+true
+```
+
+Strictly speaking, the operands of the logical operators should be boolean expressions.
+
+## Short-Cirtcuit Operators
+
+There are also equivalent boolean operators that work  with any type of arguments.
+These operators (`&&/2`, `||/2`, and `!/1`) accept arguments of any type. Any value other than `nil` or `false` is considered `true`. Here we have introduced `nil`, representing there is no value.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+x || y  # x if x is truthy; otherwise y
+x && y  # x if x is truthy; otherwise y
+!x      # false if x is truthy; otherwise true
+```
+
+---
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(5)> true || false
+true
+iex(6)> true && false
+false
+iex(7)> !true
+false
+```
+
+```elixir
+
+```
+
+## Conditional execution
+
+## Alternative execution
+
+## Chained Conditionals
+
+## Nested conditionals
+
+## Catching exceptions using try and rescue
+
+## Short-circuit evaluation of logical expressions
+
+## Debugging
+
+## Glossary
+
+## Exercises

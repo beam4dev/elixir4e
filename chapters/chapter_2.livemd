@@ -55,6 +55,8 @@ If you are not sure what type a value has, you can use `i` helper in IEx
 
 `i/n` Indicates the arity, in this case we can call `i` so it will show the information of the last value or we can call `i term` so it will show the information about `term`.
 
+A `term` refers to any data value or `expression`. As you will see, everything in Elixir is an expression.
+
 <!-- livebook:{"force_markdown":true} -->
 
 ```elixir
@@ -282,7 +284,7 @@ When Atoms start with an upper case are called [`Alias`](https://hexdocs.pm/elix
 
 ## Expressions
 
-In Elixir, everything is an expression that has a return value. So, there are no `statements` in the same sense as in Phython. Instead, we have expressions that are evaluated and return a value.
+In Elixir, everything is an expression that has a return value. So, there are no `statements` in the same sense as in Python. Instead, we have expressions that are evaluated and return a value.
 
 When you type an expression in the Elixir interactive shell, the shell evaluates it and displays the result, if there is one.
 
@@ -384,6 +386,8 @@ When more than one operator appears in an expression, the order of evaluation de
 * Operators with the same precedence are evaluated from left to right. So the expression `5-3-1 is 1`, not `3`, because the `5-3` happens first and then `1` is subtracted from `2`.
 
 When in doubt, it's always a good idea to use parentheses in your expressions to make sure the computations are performed in the order you intend.
+
+To learn more read the [Elixir Operators Reference](https://hexdocs.pm/elixir/operators.html)
 
 ## Modulus operator
 
@@ -716,7 +720,7 @@ At this point, the most likely cause of a semantic error is the order of operati
 ## Glossary
 
 * **bind / re-bind**
-  A statement that binds a value to a variable.
+  An expression that assing(binds)/reassign(rebind) a value to a variable.
 * **concatenate**
   To join two operands end to end.
 * **comment**
@@ -734,7 +738,7 @@ At this point, the most likely cause of a semantic error is the order of operati
 * **mnemonic**
   A memory aid. We often give variables mnemonic names to help us remember what is stored in the variable.
 * **modulus operator**
-  An operator,`re`m, that works on integers and yields the remainder when one number is divided by another.
+  An operator,`rem`, that works on integers and yields the remainder when one number is divided by another.
 * **operand**
   One of the values on which an operator operates.
 * **operator**
