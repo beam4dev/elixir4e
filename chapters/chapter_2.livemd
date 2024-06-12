@@ -160,7 +160,61 @@ But you can write
 
 ## Variables
 
-Elixir is a functional programming language that encourages immutability and pattern matching. In Elixir, the `=` symbol is not used for assignment. Instead, we use pattern matching to bind values to names (variables).
+Elixir is a functional programming language that encourages immutability and **pattern matching**. In Elixir, the `=` symbol is not used for assignment. Instead, we use pattern matching to bind values to names (variables). It means: **"Make the left side equal to the right side."**
+
+```
+pattern = expression
+```
+
+Let's start with a basic example:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+x = 1
+```
+
+This looks like an assignment, but it's actually saying:
+"Match `x` with `1`." Since `x` is unbound, it will match and `x` becomes `1`.
+
+Now, if we do:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+x = 2
+```
+
+This will rebind the variable `x`, and now `x` becomes `2`.
+
+If we want to force Elixir match the existing value of the variable in the pattern, we
+need to use the `pin operator`, we need to prefix the variable with `^` a caret.
+
+So now if we try to do the following
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+^x = 1
+```
+
+This will cause a Mathing error because we're asserting that x is already 2, and it can't be 1.
+
+Pattern matching shines when dealing with more complex structures, just a quick overview
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+{a, b, c} = {1, 2, 3}
+```
+
+`a` becomes `1`, `b` becomes `2`, and `c` becomes `3`.
+
+You can also use pattern matching to extract values from lists:
+[h | t] = [1, 2, 3]
+`h` becomes `1`, and `t` becomes `[2, 3]`.
+
+To learn more about [Pattern Matching](https://hexdocs.pm/elixir/main/pattern-matching.html)
 
 Examples of Binding Values to Variables in Elixir:
 
@@ -196,7 +250,8 @@ And now for something completely different
 ```elixir
 # Bind a value to a variable
 # Display the value
-# Displat the info of the value 
+# Display the info of the value 
+# Use the pin operator
 ```
 
 ## Variable names and keywords
