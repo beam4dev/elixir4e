@@ -1,3 +1,5 @@
+<!-- livebook:{"file_entries":[{"name":"cond.svg","type":"attachment"},{"name":"if-else.svg","type":"attachment"},{"name":"if.svg","type":"attachment"},{"name":"nested.svg","type":"attachment"}]} -->
+
 # Conditional execution
 
 ```elixir
@@ -47,7 +49,9 @@ Learn more about [Booleans](https://hexdocs.pm/elixir/basic-types.html#booleans-
 
 The `==` operator is one of the comparison operators; the others are:
 
-```
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
 x === y              # x is strict equal to y    (value and type equality)  
 X !== y              # x is strict inequal to y  (value and type equality)  
 x != y               # x is not equal to y (value equality)
@@ -126,24 +130,536 @@ iex(7)> !true
 false
 ```
 
+## Conditional execution
+
+In order to write useful programs, we almost always need the ability to check conditions and change the behavior of the program accordingly. `Conditional expressions` give us this ability. The simplest form is the `if` control flow structure :
+
+<!-- livebook:{"force_markdown":true} -->
+
 ```elixir
+iex(1)> x = 1
+1
+iex(2)> if x > 0 do
+...(2)>    IO.puts("X is positive")
+...(2)> end
+X is positive
+:ok
+```
+
+```elixir
+# Experiment rebingind the value x to
+# x = 0, x = -1
+x = 1
+
+if x > 0 do
+  IO.puts("X is positive")
+end
+```
+
+The boolean expression given to `if/2` is called the condition. Then we write the body between `do-end`.
+
+To learn more about [if control flow](https://hexdocs.pm/elixir/case-cond-and-if.html#if-unless)
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/if.svg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+If the condition given to `if/2` returns true the body given between `do-end` is executed. If not instead it returns nil.
+
+For example, if you want to print the values of `x` and `y` when `x` is greater than `y`, you can write it like this:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+if x > y do
+  IO.puts(x)
+  IO.puts(y)
+end
+```
+
+There is no limit on the number of expressions that can appear in the body `do-end`. Occasionally, it is useful to have a body with no statements (usually as a place holder for code you haven't written yet). In that case, you can use a comment, which does nothing.
+
+<!-- livebook:{"force_markdown":true} -->
+
+`````elixir
+if x < 0 do
+  # Need to handle negative values, but we do nothing for now
+end
+````
+If you enter an `if` expression in the IEx interpreter, the prompt will change from (iex(2))>) to three dots (…(2)) to indicate you are in the middle of an expression, as shown below:
+
+`````
+
+iex(1)> x = 3
+3
+iex(2)> if x < 10 do
+...(2)>   IO.puts("small")
+...(2)> end
+small
+:ok
+iex(3)>
 
 ```
 
-## Conditional execution
+```
 
 ## Alternative execution
 
+A second form of the `if/2` expression is alternative execution, in which there are two possibilities and the condition determines which one gets executed. The syntax looks like this:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+if rem(x,2) == 0  do
+  IO.puts("#{x} is even")
+else
+  IO.puts("#{x} is odd")
+end
+```
+
+If the remainder when x is divided by 2 is 0, then we know that x is even, and the program displays a message to that effect. If the condition is false, the `else` branch is executed
+
+<!-- livebook:{"break_markdown":true} -->
+
+![](files/if-else.svg)
+
+<!-- livebook:{"break_markdown":true} -->
+
+Since the condition must either be `true` or `false`, exactly one of the alternatives will be executed. The alternatives are called branches, because they are branches in the flow of execution.
+
 ## Chained Conditionals
+
+Sometimes there are more than two possibilities and we need more than two branches. One way to express a computation like that is a chained conditional, in Elixir we use `cond`:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+cond do
+  x < y ->
+    IO.puts("#{x} is less than #{y}")
+  x > y ->
+    IO.puts("#{x} is greater than #{y}")
+  true ->
+    IO.puts("#{x} and #{y} are equal")  # default clause or catch all.
+end
+
+```
+
+There is no limit in the number of conditions. 
+Each condition is checked in order. If the first is `false` or `nil`, the next is checked, and so on. If one of them is `true`, the corresponding branch is executed. Even if more than one condition is `true`, only the first `true` branch executes.
+
+If none of the conditions are satisfied, `cond` raises an error if and only if there is no a default or final condition, equal to `true`, which will always match.
+
+![](files/cond.svg)
+
+In other languages `cond` is similar to the pattern `if-elseif`
+To learn more about [cond](https://hexdocs.pm/elixir/case-cond-and-if.html#cond)
 
 ## Nested conditionals
 
+One conditional can also be nested within another. We could have written the three-branch example like this:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+  if x == y do
+    IO.puts("#{x} and #{y} are equal")
+  else
+      if x < y do
+          IO.puts("#{x} is less than #{y}")
+      else
+          IO.puts("#{x} is greater than #{y}")
+      end    
+  end
+```
+
+The outer conditional contains two branches. The first branch contains a simple expression. The second branch contains another `if/2`, which has two branches of its own. Those two branches are both simple expressions, although they could have been conditional expressions as well.
+
+![](files/nested.svg)
+
+Although the indentation of the code makes the structure apparent, nested conditionals become difficult to read very quickly. In general, it is a good idea to avoid them when you can.
+
+Logical operators often provide a way to simplify nested conditional statements. For example, we can rewrite the following code using a single conditional:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+  if 0 < x do
+    if x < 10 do
+      IO.puts("x is a positive single-digit number.")
+    end
+  end
+```
+
+The `IO.puts` function is executed only when we pass both conditionals. We can get the same effect with the `and` operator:
+
+<!-- livebook:{"force_markdown":true} -->
+
+`````elixir
+  if 0 < x and x < 10 do
+    IO.puts("x is a positive single-digit number.")
+  end
+  ````
+`````
+
+## Case: flow control through pattern matching
+
+Think of a `case` structure like a series of doors with labels. Each door has a condition written on it. When you encounter a situation, you start checking the doors one by one. As soon as you find a door with a matching condition, you open it and follow the instructions behind it. It's like solving a puzzle where you explore the doors in order until you find the right one.
+
+In programming, the `case` structure works similarly: it evaluates conditions in order and executes the code associated with the first matching condition. But what if none of the doors match?. An error is raised, "Oops, something unexpected happened!". That's where our special door labeled "Fallback" or "Catch-All" comes in. If all else fails, you automatically go to the "Fallback" door. It's like having a safety net for situations we didn't anticipate.
+
+In programming terms, that "Fallback" door corresponds to the default condition `_ -> something` in a case structure. If none of the specific conditions match, this catch-all condition handles unexpected cases and prevents errors from crashing our program.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+case expression do
+pattern_1 -> something_1
+...
+pattern_n -> something_n
+
+_ -> something  # default condition 
+
+end
+```
+
+Example
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+  case rem(value, 2) do
+      0 -> "The number is even."
+      _ -> "The number is odd."
+  end
+```
+
+Play with the example in the following cell, update the value of `x`
+
+```elixir
+# add different values 
+x = 2
+
+case rem(x, 2) do
+  0 -> "The number is even."
+  _ -> "The number is odd."
+end
+```
+
 ## Catching exceptions using try and rescue
+
+In a previous section, we saw a code snippet where we used the `IO.gets` and `String.to_integer` functions to read and parse an integer number entered by the user. We also saw how error-prone this could be:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> prompt = "What is the air velocity of an unladen swallow?\n"
+"What is the air velocity of an unladen swallow?\n"
+iex(2)>  speed = IO.gets(prompt)
+What is the air velocity of an unladen swallow?
+What do you mean, an African or a European swallow?
+"What do you mean, an African or a European swallow?\n"
+iex(3)> String.to_integer(speed)
+** (ArgumentError) errors were found at the given arguments:
+
+  * 1st argument: not a textual representation of an integer
+
+    erlang.erl:4716: :erlang.binary_to_integer("What do you mean, an African or a European swallow?\n")
+    iex:3: (file)
+iex(3)>
+```
+
+When we are executing these expressions in the Elixir interpreter (iex), we get a new prompt from the interpreter, think "oops", and move on to our next expression.
+
+However, if you place this code in an Elixir script or programs and this error occurs, your script or program immediately stops in its tracks with an error message. It does not execute the following expressions.
+
+Here is a sample program to convert a Fahrenheit temperature to a Celsius temperature:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+input = IO.gets("Enter Fahrenheit Temperature:") |> String.trim
+fahr = String.to_float(input)
+cel = (fahr - 32.0) * 5.0 / 9.0
+IO.puts cel
+
+```
+
+If we execute this code and give it invalid input, it simply fails with an unfriendly error message:
+
+```cmd
+elixir fahren.exs
+Enter Fahrenheit Temperature:72.0
+22.22222222222222
+
+elixir fahren.exs
+Enter Fahrenheit Temperature: 72
+** (ArgumentError) argument error
+```
+
+There is a conditional execution structure built into Elixir to handle these types of expected and unexpected errors called `try / rescue`. The purpose of `try` and `rescue` is that you know that some sequence of instruction(s) may have a problem and you want to add some expressions to be executed if an error occurs. These extra expressions (the rescue block) are ignored if there is no error.
+
+You can think of the `try` and `rescue` feature in Elixir as an "insurance policy" on a sequence of expressions.
+
+We can rewrite our temperature converter as follows:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+inp = IO.gets("Enter Fahrenheit Temperature:") |> String.trim()
+
+try do
+  fahr = String.to_float(inp)
+  cel = (fahr - 32.0) * 5.0 / 9.0
+  IO.puts(cel)
+rescue
+  _error ->IO.puts("Please enter a number:\n")
+end
+```
+
+Elixir starts by executing the sequence of expressions in the `try` block. If all goes well, it skips the `rescue` block and proceeds. If an exception occurs in the `try` block, Elixir jumps out of the `try` block and executes the sequence of expressions in the `rescue` block.
+
+```cmd
+elixir fahren_with_error_handling.exs
+Enter Fahrenheit Temperature:72.0
+22.22222222222222
+
+elixir fahren_with_error_handling.exs
+Enter Fahrenheit Temperature:fred
+Please enter a number:
+```
+
+Handling an exception with a `try` block is called catching an exception. In this example, the `rescue` clause prints an error message. In general, catching an exception gives you a chance to fix the problem, or try again, or at least end the program gracefully.
+
+To learn more about [exceptions](https://hexdocs.pm/elixir/try-catch-and-rescue.html)
 
 ## Short-circuit evaluation of logical expressions
 
+When Elixir is processing a logical expression such as `x >= 2 && (x/y) > 2`, it evaluates the expression from `left to right`. Because of the definition of `&&`, if `x` is less than `2`, the expression `x >= 2` is `False` and so the whole expression is `False` regardless of whether `(x/y) > 2` evaluates to `True` or `False`.
+
+When Elixir detects that there is nothing to be gained by evaluating the rest of a logical expression, it stops its evaluation and does not do the computations in the rest of the logical expression. When the evaluation of a logical expression stops because the overall value is already known, it is called `short-circuiting` the evaluation.
+
+While this may seem like a fine point, the short-circuit behavior leads to a clever technique called the guardian pattern. Consider the following code sequence in the Elixir.
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> x = 6
+6
+iex(2)> y = 2
+2
+iex(3)> x >= 2 && (x/y) > 2
+true
+iex(4)> x = 1
+1
+iex(5)> y = 0
+0
+iex(6)> x >= 2 && (x/y) > 2
+false
+iex(7)> x = 6
+6
+iex(8)> y = 0
+0
+iex(9)> x >= 2 && (x/y) > 2
+** (ArithmeticError) bad argument in arithmetic expression: 6 / 0
+    :erlang./(6, 0)
+    iex:9: (file)
+```
+
+The third calculation failed because Elixir was evaluating `(x/y)` and `y` was zero, which causes a runtime error. But the first and the second examples did not fail because in the first calculation `y` was non zero and in the second one the first part of these expressions `x >= 2` evaluated to False so the `(x/y)` was not ever executed due to the `short-circuit` rule and there was no error.
+
+We can construct the logical expression to strategically place a `guard` evaluation just before the evaluation that might cause an error as follows:
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(1)> x = 1
+1
+iex(2)> y = 0
+0
+iex(3)> x >= 2 && y != 0 && (x/y) > 2
+false
+iex(4)> x = 6
+6
+iex(5)> y = 0
+0
+iex(6)> x >= 2 && y != 0 && (x/y) > 2
+false
+iex(7)> x >= 2 && (x/y) > 2 && y != 0
+** (ArithmeticError) bad argument in arithmetic expression: 6 / 0
+    :erlang./(6, 0)
+    iex:7: (file)
+```
+
+In the first logical expression, `x >= 2` is `False` so the evaluation stops at the `&&`. In the second logical expression, `x >= 2` is `True` but `y != 0` is `False` so we never reach `(x/y)`.
+
+In the third logical expression, the `y != 0` is after the `(x/y)` calculation so the expression fails with an error.
+
+In the second expression, we say that `y != 0` acts as a guard to ensure that we only execute ``(x/y)` if `y` is non-zero.
+
+You can experiment with the examples in the followings cells.
+
+```elixir
+x = 6
+y = 2
+x >= 2 && x / y > 2
+```
+
+```elixir
+x = 1
+y = 0
+x >= 2 && x / y > 2
+```
+
+```elixir
+x = 1
+y = 0
+x >= 2 && y != 0 && x / y > 2
+```
+
+```elixir
+x = 6
+y = 0
+x >= 2 && y != 0 && x / y > 2
+```
+
+```elixir
+x >= 2 && x / y > 2 && y != 0
+```
+
 ## Debugging
+
+The error message Elixir displays when an error occurs contains a lot of information, but it can be overwhelming. The most useful parts are usually:
+
+* What kind of error it was, and
+* Where it occurred.
+
+Syntax errors are usually easy to find.
+For example
+
+```
+iex(4)> x = 5
+5
+iex(5)> end = 6
+** (SyntaxError) invalid syntax found on iex:5:1:
+    error: unexpected reserved word: end
+    │
+  5 │ end = 6
+    │ ^
+    │
+    └─ iex:5:1
+    (iex 1.16.2) lib/iex/evaluator.ex:295: IEx.Evaluator.parse_eval_inspect/4
+    (iex 1.16.2) lib/iex/evaluator.ex:187: IEx.Evaluator.loop/1
+    (iex 1.16.2) lib/iex/evaluator.ex:32: IEx.Evaluator.init/5
+    (stdlib 5.2.3) proc_lib.erl:241: :proc_lib.init_p_do_apply/3
+```
+
+In this example, the problem is that the second line is using a reserved word. In general, error messages indicate where the problem was discovered, but the actual error might be earlier in the code, sometimes on a previous line.
+
+In general, error messages tell you where the problem was discovered, but that is often not where it was caused.
+
+To learn more about [debugging](https://hexdocs.pm/elixir/main/debugging.html)
 
 ## Glossary
 
+* **body**
+  The sequence of expressions.
+* **boolean expression**
+  An expression whose value is either `True` or `False`.
+* **branch**
+  One of the alternative sequences of statements in a conditional statement.
+* **chained conditional**
+  A conditional expression with a series of alternative branches.
+* **comparison operator**
+  One of the operators that compares its operands: `===`, `==`, `!==`, `!=`, `>`, `<`, `>=`, and `<=`.
+* **conditional expression**
+  An expression that controls the flow of execution depending on some condition.
+* **condition**
+  The boolean expression in a conditional expression that determines which branch is executed.
+* **guardian pattern**
+  Where we construct a logical expression with additional comparisons to take advantage of the short-circuit behavior.
+* **short-circuit operators**
+  One of the following operators `||`, `&&`, and `!`. They first operand doesn't need to be boolean. They work with Truthy values, nil and false and treated as `flasy`, everything else is a `truthy` value.
+* **logical operator**
+  One of the operators that combines boolean expressions: `and`, `or`, and `not`.
+* **nested conditional**
+  A conditional expression that appears in one of the branches of another conditional expressopm.
+* **stack-trace**
+  A list of the functions that are executing, printed when an exception occurs.
+* **short circuit**
+  When Elixir is part-way through evaluating a logical expression and stops the evaluation because Elixir knows the final value for the expression without needing to evaluate the rest of the expression.
+
 ## Exercises
+
+* **Exercise 1**: Rewrite your pay computation to give the employee 1.5 times the hourly rate for hours worked above 40 hours.
+
+```
+Enter Hours: 45
+Enter Rate: 10
+Pay: 475.0
+```
+
+* **Exercise 2**: Rewrite your pay program using `try` and `rescue` so that your program handles non-numeric (only integers are handled for now) input gracefully by printing a message and exiting the program. The following shows two executions of the program:
+
+```
+Enter Hours: 20
+Enter Rate: nine
+```
+
+---
+
+```
+Error, please enter numeric input
+Enter Hours: forty
+Error, please enter numeric input
+```
+
+* **Exercise 3**: Write a program to prompt for a score between `0.0` and `1.0`. If the score is out of range, print an error message. If the score is between `0.0` and `1.0`, print a grade using the following table:
+
+```
+ Score   Grade
+>= 0.9     A
+>= 0.8     B
+>= 0.7     C
+>= 0.6     D
+ < 0.6     F
+```
+
+---
+
+```
+ Enter score: 0.95
+A
+```
+
+---
+
+```
+Enter score: perfect
+Bad score
+```
+
+---
+
+```
+Enter score: 10.0
+Bad score
+```
+
+---
+
+```
+Enter score: 0.75
+C
+```
+
+---
+
+```
+Enter score: 0.5
+F
+```
+
+Run the program repeatedly as shown above to test the various different values for input.
