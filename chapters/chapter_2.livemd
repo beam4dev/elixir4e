@@ -91,16 +91,37 @@ Implemented protocols
   Collectable, IEx.Info, Inspect, List.Chars, String.Chars  
 ```
 
+You can also use one of the following built-in type-check functions defined in the [Kernel](https://hexdocs.pm/elixir/Kernel.html) module; they return true if their argument (term) matches the specified type
+
+`is_atom` `is_binary` `is_bitstring` `is_boolean` `is_exception` `is_float`
+  `is_function` `is_integer` `is_list` `is_map` `is_number` `is_pid`
+  `is_port` `is_record` `is_reference` `is_tuple`
+
+For example
+
+<!-- livebook:{"force_markdown":true} -->
+
+```elixir
+iex(3)> is_integer(3)
+true
+iex(4)> is_integer(3.0)
+false
+```
+
 You can try it here
 
 ```elixir
 a = 1
 i(a)
+
+is_integer(a)
 ```
 
 ```elixir
 str = "Hello World"
 i(str)
+
+is_bitstring(str)
 ```
 
 [Strings](https://hexdocs.pm/elixir/1.7.1/syntax-reference.html#strings) belong to the type `BitString` and integers belong to the type `Integer`. Less obviously, numbers with a decimal point belong to a type called `Float`, because these numbers are represented in a format called `floating point`.
@@ -121,13 +142,20 @@ Implemented protocols
 
 ```elixir
 i(3.2)
+
+is_float(3.2)
 ```
 
 What about values like `"17"` and `"3.2"`? They look like numbers, but they are in quotation marks like strings.
 
 ```elixir
 i("17")
+is_integer("17")
+```
+
+```elixir
 i("3.2")
+is_float("3.2")
 ```
 
 They’re strings. When you type a large integer, you might be tempted to use commas between groups of three digits, as in 1,000,000. This is not a legal integer in Elixir

@@ -11,3 +11,4 @@ This book is based on [Python for Everybody](https://www.py4e.com/book) by Dr. C
 * [Chapter 1: Introduction](chapters/chapter_1.livemd)
 * [Chapter 2: Variables](chapters/chapter_2.livemd)
 * [Chapter 3: Conditionals](chapters/chapter_3.livemd)
+* [Chapter 4: Functions](chapters/chapter_4.livemd)

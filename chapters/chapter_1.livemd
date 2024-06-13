@@ -135,11 +135,11 @@ We start with the vocabulary and structure of Elixir programs. Be patient as the
 
 ## Words and sentences
 
-Elixir’s vocabulary, is minimal, it has a very few reserve works.  Elixir also has macros such as `def` and `defmodule` which serve a special purpose. We will treat these macros as keywords in other languages because they have a specific meaning in Elixir programs. When writing Elixir programs, you’ll define your own names for variables and functions, but you must avoid using these special macros as names.
+Elixir's vocabulary, is minimal, it has a very few reserve words.  Elixir also has macros such as `def` and `defmodule` which serve a special purpose. We will treat these macros as keywords in other languages because they have a specific meaning in Elixir programs. When writing Elixir programs, you'll define your own names for variables and functions, but you must avoid using these special macros as names.
 
 Training a Pet Analogy
 
-Just as we use commands like “sit” or “fetch” to communicate with a dog, we use Elixir’s macros to instruct the Elixir compiler. If we were to anthropomorphize Elixir, we might imagine it patiently waiting for us to use these macros correctly to perform actions.
+Just as we use commands like "sit" or "fetch" to communicate with a dog, we use Elixir's macros to instruct the Elixir compiler. If we were to anthropomorphize Elixir, we might imagine it patiently waiting for us to use these macros correctly to perform actions.
 
 <!-- livebook:{"break_markdown":true} -->
 
